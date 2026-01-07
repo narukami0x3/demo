@@ -76,14 +76,14 @@ async function insertresult(board_id,boardscore,form_id,user_id) {
     }finally{conn.release()}
 }
 
-async function summary(id,sum,comment,user_id) {
+async function summary(id,sum,comment,file,user_id) {
     let conn = await pool.getConnection()
     try{
         const row2 = await conn.query(
-            "UPDATE summary SET board_id = ? , board_sum = ? , board_comment = ? WHERE user_id = ?",
-            [id,sum,comment,user_id]
+            "UPDATE summary SET board_id = ? , board_sum = ? , board_comment = ? , board_signature = ? WHERE user_id = ?",
+            [id,sum,comment,file,user_id]
         )
-        return row2
+        return row2.affectedRows
     }catch(e){
         console.log(e)
         res.status(500).json({message: "ERROR getformuser"})
