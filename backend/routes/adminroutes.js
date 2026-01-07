@@ -3,6 +3,7 @@ const router = express.Router()
 const ctrl = require('../controller/admincontroller')
 
 router.get('/getuser',ctrl.getuser)
+router.get('/getuserresult',ctrl.getuserresult)
 
 router.put('/updatetime/:id',ctrl.time)
 

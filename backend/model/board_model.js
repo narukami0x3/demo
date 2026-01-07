@@ -25,11 +25,14 @@ async function getformboard(id) {
         const row4 = await conn.query(
             `SELECT
             r.form_id,
-            r.selfscore
+            r.selfscore,
+            s.user_attachment
             FROM result r
+            LEFT JOIN summary s ON s.user_id = r.user_id
             WHERE r.user_id = ? AND r.board_id IS NULL`,
             [id]
         )
+
         return [row1,row2,row3,row4]
     }catch(e){
         console.log(e)
@@ -40,6 +43,7 @@ async function getformboard(id) {
 async function getuser(id) {
     let conn = await pool.getConnection()
     try{
+        console.log(id)
         const row = await conn.query(
             `SELECT 
             b.user_id,
@@ -83,7 +87,7 @@ async function summary(id,sum,comment,file,user_id) {
             "UPDATE summary SET board_id = ? , board_sum = ? , board_comment = ? , board_signature = ? WHERE user_id = ?",
             [id,sum,comment,file,user_id]
         )
-        return row2.affectedRows
+        return row2
     }catch(e){
         console.log(e)
         res.status(500).json({message: "ERROR getformuser"})

@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
         cb(ERROR,path.join(__dirname,"..","upload",dir))
     },
     filename: function (req,file,cb){
-        const filename = file.originalname.split('  ')
+        const filename = Buffer.from(file.originalname, 'latin1').toString('utf8')
         cb(null,`${Date.now()}-${filename}`)
     }
 })

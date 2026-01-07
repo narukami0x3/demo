@@ -20,11 +20,30 @@ exports.time = async (req,res) => {
 
 exports.getuser = async (req,res) => {
     const {token} = req.headers
+    console.log(token)
     try{
         const tdecode = jwt.decode(token)
+        console.log(tdecode)
         if(tdecode.role != 1) return res.status(401).json({message: "access denind"})
         const row = await admin.getuser()
         if(!row) return res.status(400).json({message: "getuser failed"})
+        res.status(200).json({data: row})
+    }catch(e){
+        console.log(e)
+        res.status(500).json({message: "ERROR"})
+    }
+}
+
+exports.getuserresult = async (req,res) => {
+    const {token} = req.headers
+    console.log(token)
+    try{
+        const tdecode = jwt.decode(token)
+        console.log(tdecode.id)
+        if(tdecode.role != 1) return res.status(401).json({message: "access denind"})
+        const row = await admin.getuserresult()
+        if(!row) return res.status(400).json({message: "getuserresult failed"})
+            console.log(row)
         res.status(200).json({data: row})
     }catch(e){
         console.log(e)

@@ -44,6 +44,30 @@ async function getuser() {
     }finally{conn.release()}
 }
 
+async function getuserresult() {
+    let conn = await pool.getConnection()
+    try{
+        const row = await conn.query(
+            `
+            SELECT 
+            u.username AS user_username,
+            b.username AS board_username,
+            s.user_sum,
+            s.board_sum,
+            s.board_comment
+            FROM summary s
+            LEFT JOIN users u ON u.user_id = s.user_id
+            LEFT JOIN users b ON b.user_id = s.board_id
+            `
+        )
+        console.log(row)
+        return row
+    }catch(e){
+        console.log(e)
+        res.status(500).json({message: "ERROR getformuser"})
+    }finally{conn.release()}
+}
+
 async function boardsign(user_id,board_id,role,admin_id) {
     let conn = await pool.getConnection()
     try{
@@ -56,4 +80,4 @@ async function boardsign(user_id,board_id,role,admin_id) {
         console.log(e)
     }finally{conn.release()}
 }
-module.exports = {time,boardsign,getuser}
+module.exports = {time,boardsign,getuser,getuserresult}
