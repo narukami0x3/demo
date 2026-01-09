@@ -26,12 +26,12 @@ async function insertindicator(indicator,ep_id,id) {
     }finally{conn.release()}
 }
 
-async function insertform(detail,in_id,id) {
+async function insertform(form,in_id,id) {
     let conn = await pool.getConnection()
     try{
         const row = await conn.query(
-            "INSERT INTO form (detail,indicator_id,admin_id) VALUES (?,?,?)",
-            [detail,in_id,id]
+            "INSERT INTO form (form,indicator_id,admin_id) VALUES (?,?,?)",
+            [form,in_id,id]
         )
         return row.insertId
     }catch(e){
